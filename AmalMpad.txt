@@ -1,0 +1,25 @@
+import json
+import boto3
+import urllib.parse
+
+
+
+print("loading function")
+
+s3 = boto3.client('s3')
+
+def lambda_handler(event, context):
+    print(event)
+    
+    bucket_name=event['Records'][0]['s3']['bucket']['name']
+    print(bucket_name)
+    
+    file_name=event['Records'][0]['s3']['object']['key']
+    print(file_name)
+    
+    response=s3.get_object(Bucket=bucket_name,Key=file_name)
+    print(response)
+    print("content type"+response['ContentType'])
+    
+    file_read=response['Body'].read().decode('utf-8')
+    print('file-content'+file_read)
